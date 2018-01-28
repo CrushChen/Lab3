@@ -20,16 +20,21 @@ using std::getline;
 using std::istringstream;
 using std::string;
 using std::vector;
-
 /*
  * 
  */
 int main(int argc, char** argv) {
   // Use command line argument as file name
+  /*
   if (argc != 2) {
     std::cerr << "usage: Lab3 file\n";
     exit(1);
   }
+  */
+    
+  //Done for ease of debugging
+  PageFrameAllocator pf(3);
+  pf.view5Bytes();
   
   std::cout << "Done.\n";
   return 0;
