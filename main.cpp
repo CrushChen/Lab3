@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /* 
  * File:   main.cpp
  * Author: chenchen
@@ -12,14 +6,31 @@
  */
 
 #include <cstdlib>
+#include <algorithm>
+#include <cctype>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+#include "PageFrameAllocator.h"
 
-using namespace std;
+using std::cin;
+using std::cout;
+using std::cerr;
+using std::getline;
+using std::istringstream;
+using std::string;
+using std::vector;
 
 /*
  * 
  */
 int main(int argc, char** argv) {
-
-    return 0;
+  // Use command line argument as file name
+  if (argc != 2) {
+    std::cerr << "usage: Lab3 file\n";
+    exit(1);
+  }
+  
+  std::cout << "Done.\n";
+  return 0;
 }
-
