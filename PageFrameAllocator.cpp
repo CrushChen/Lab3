@@ -69,6 +69,14 @@ bool PageFrameAllocator::Deallocate(uint32_t count, std::vector<uint32_t> &page_
  * vector as they are returned to the free list. Returns true if
  * count <= page_frames.size() otherwise returns false without freeing any page frames
  */
+    if(count<=page_frames.size())
+    {
+       return  true;
+    }
+    else
+    {
+       return false;
+    }
 
 }
 
