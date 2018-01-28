@@ -1,8 +1,8 @@
 /* 
  * File:   PageFrameAllocator.h
- * Author: chenchen
+ * Author: Tristan Gay
  *
- * Created on January 27, 2018, 2:58 PM
+ * Created on January 27, 2018, 12:39 AM
  */
 
 #ifndef PAGEFRAMEALLOCATOR_H
@@ -52,6 +52,9 @@ public:
     PageFrameAllocator operator=(const PageFrameAllocator &orig) = delete;
     PageFrameAllocator operator=(PageFrameAllocator &&orig) = delete;
     
+    /* Debugging: Prints first 10 bytes of each memory block*/
+    void view5Bytes();
+    
     /* Unused destructor */
     virtual ~PageFrameAllocator();
 private:
@@ -59,7 +62,7 @@ private:
     uint32_t page_frames_total; //Counts total # of page frames in memory (* 0x1000)
     uint32_t page_frames_free; //Current # of free page frames
     uint32_t free_list_head; //Page frame # of the first page frame in free list (0xFFFFFFFF if empty)
-    const uint32_t PAGE_FRAME_SIZE = 0x1000; //Page frame size (4096 in decimal)
+    static const uint32_t PAGE_FRAME_SIZE = 0x1000; //Page frame size (4096 in decimal)
     
     /* -- Linked List Implementation --
      * Contains the free page frames in the form of a linked list. 
@@ -73,4 +76,3 @@ private:
 };
 
 #endif /* PAGEFRAMEALLOCATOR_H */
-
