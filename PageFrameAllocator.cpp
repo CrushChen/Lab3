@@ -33,15 +33,18 @@ PageFrameAllocator::PageFrameAllocator(uint32_t numPageFrames){
     memory.resize(numPageFrames * PAGE_FRAME_SIZE);
     std::cout << "Size of memory: " << memory.size() << std::endl;
     
-    for(int i = 0; i < numPageFrames; ++i){
-        int position = 0;
-        int offset = i * PAGE_FRAME_SIZE;
+    for(int i = 1; i <= numPageFrames; ++i){
+        int offset = (i - 1) * PAGE_FRAME_SIZE; //determines the starting location of each page
+        int position = 0; //position within the first 4 bytes of each page
         for(int k = 3 + offset; k >= offset; --k){
-            memory[k] = ((((i + 1) * PAGE_FRAME_SIZE) >> (8 * position)) & 0xFF);
-            position++;
+            //stores 1 byte (0xFF) of the next page number in each of the first 4 bytes of the page
+            memory[k] = (((i * PAGE_FRAME_SIZE) >> (8 * position)) & 0xFF); 
+            position++; //increment shift amount of the numerical value of the next page number
         }
     }
-    page_frames_total = numPageFrames;
+    
+    //Initialize class member variables
+    page_frames_total = numPageFrames; 
     page_frames_free = numPageFrames;
     free_list_head = 0xFFFFFFFF;
 }
