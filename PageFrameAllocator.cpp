@@ -23,7 +23,7 @@ PageFrameAllocator::PageFrameAllocator(uint32_t numPageFrames){
     //Initialize class member variables
     page_frames_total = numPageFrames; 
     page_frames_free = numPageFrames;
-    free_list_head = 0x1;
+    free_list_head = 0x0;
 }
 
 bool PageFrameAllocator::Allocate(uint32_t count, std::vector<uint32_t> &page_frames){
