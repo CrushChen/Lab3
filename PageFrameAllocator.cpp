@@ -62,7 +62,11 @@ bool PageFrameAllocator::Allocate(uint32_t count, std::vector<uint32_t> &page_fr
         {
             
     page_frames.push_back(free_list_head);
-    
+    free_list_head++;
+    if(free_list_head== page_frames_total)
+    {
+        free_list_head=0xFFFF;
+    }
     
         }
     page_frames_free -= count;
@@ -77,11 +81,16 @@ bool PageFrameAllocator::Deallocate(uint32_t count, std::vector<uint32_t> &page_
  */
     if(count<=page_frames.size())
     {
+        if(free_list_head= 0xFFFF)
+        {
+            free_list_head=page_frames_total;
+        }
         page_frames_free +=count;
         for(int i=0;i<count;i++)
         {
        free_list_head=page_frames.back();
         page_frames.pop_back();
+        free_list_head--;
         }
     }
     else
