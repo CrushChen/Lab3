@@ -14,6 +14,7 @@
 #include "PageFrameAllocator.h"
 
 #include <iostream>
+#include <cstring>
 
 
 /* -- Linked List Implementation --
@@ -30,23 +31,15 @@ PageFrameAllocator::PageFrameAllocator(uint32_t numPageFrames){
 /* Should resize memory memory vector to numPageFrames * 0x1000 
  * Then build free list consistent of all page frames in memory.
  * Initialize other class member data variables as needed. */
-    memory.resize(numPageFrames * PAGE_FRAME_SIZE);
-    std::cout << "Size of memory: " << memory.size() << std::endl;
-    
-    for(int i = 1; i <= numPageFrames; ++i){
-        int offset = (i - 1) * PAGE_FRAME_SIZE; //determines the starting location of each page
-        int position = 0; //position within the first 4 bytes of each page
-        for(int k = 3 + offset; k >= offset; --k){
-            //stores 1 byte (0xFF) of the next page number in each of the first 4 bytes of the page
-            memory[k] = (((i * PAGE_FRAME_SIZE) >> (8 * position)) & 0xFF); 
-            position++; //increment shift amount of the numerical value of the next page number
-        }
+    memory.resize(numPageFrames * PAGE_FRAME_SIZE, 0);
+    for(uint32_t i = 0; i < numPageFrames; ++i){
+        memcpy(&memory[(i*PAGE_FRAME_SIZE)], &i, sizeof(uint32_t));
     }
-    
     //Initialize class member variables
+    allocated_pages.resize(numPageFrames, 0);
     page_frames_total = numPageFrames; 
     page_frames_free = numPageFrames;
-    free_list_head = 0xFFFFFFFF;
+    free_list_head = 0x1;
 }
 
 bool PageFrameAllocator::Allocate(uint32_t count, std::vector<uint32_t> &page_frames){
@@ -69,14 +62,6 @@ bool PageFrameAllocator::Deallocate(uint32_t count, std::vector<uint32_t> &page_
  * vector as they are returned to the free list. Returns true if
  * count <= page_frames.size() otherwise returns false without freeing any page frames
  */
-    if(count<=page_frames.size())
-    {
-       return  true;
-    }
-    else
-    {
-       return false;
-    }
 
 }
 
