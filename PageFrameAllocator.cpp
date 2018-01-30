@@ -32,6 +32,7 @@ PageFrameAllocator::PageFrameAllocator(uint32_t numPageFrames){
  * Then build free list consistent of all page frames in memory.
  * Initialize other class member data variables as needed. */
     memory.resize(numPageFrames * PAGE_FRAME_SIZE, 0);
+    int pos = 0;
     for(uint32_t i = 1; i <= numPageFrames; ++i){
         memcpy(&memory[((i-1)*PAGE_FRAME_SIZE)], &i, sizeof(uint32_t));
     }
@@ -50,6 +51,7 @@ bool PageFrameAllocator::Allocate(uint32_t count, std::vector<uint32_t> &page_fr
  * If page frames are successfully allocated, return true.*/
     if(page_frames_free < count)
         return false;
+  
     
     //TODO: push allocated page frames onto back of page_frames
     
@@ -67,10 +69,9 @@ bool PageFrameAllocator::Deallocate(uint32_t count, std::vector<uint32_t> &page_
 
 void PageFrameAllocator::view5Bytes(){
     for(int i = 0; i < page_frames_total; ++i){
-        for(int j = (i * PAGE_FRAME_SIZE); j < (5 + (i * PAGE_FRAME_SIZE)); ++j){
-            std::cout << +memory[j] << ", ";
-        }
-        std::cout << std::endl;
+        uint32_t temp;
+        memcpy(&temp, &memory[i*PAGE_FRAME_SIZE], sizeof(uint32_t));
+        std::cout << "Page frame " << +i << " points to " << +temp << std::endl;
     }
 }
 
