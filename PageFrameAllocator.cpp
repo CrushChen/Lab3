@@ -58,7 +58,13 @@ bool PageFrameAllocator::Allocate(uint32_t count, std::vector<uint32_t> &page_fr
     //TODO: push allocated page frames onto back of page_frames
     else
     {
+        for(int i=0;i<count;i++)
+        {
+            
     page_frames.push_back(free_list_head);
+    
+    
+        }
     page_frames_free -= count;
     return true;
     }
@@ -72,8 +78,11 @@ bool PageFrameAllocator::Deallocate(uint32_t count, std::vector<uint32_t> &page_
     if(count<=page_frames.size())
     {
         page_frames_free +=count;
+        for(int i=0;i<count;i++)
+        {
        free_list_head=page_frames.back();
         page_frames.pop_back();
+        }
     }
     else
     {
