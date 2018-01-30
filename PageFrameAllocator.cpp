@@ -5,11 +5,8 @@
  * Created on January 27, 2018, 12:39 AM
  */
 
+#include <cstring> //memcpy
 #include "PageFrameAllocator.h"
-
-#include <iostream>
-#include <cstring>
-
 
 PageFrameAllocator::PageFrameAllocator(uint32_t numPageFrames){
 /* Should resize memory memory vector to numPageFrames * 0x1000 
@@ -35,14 +32,19 @@ bool PageFrameAllocator::Allocate(uint32_t count, std::vector<uint32_t> &page_fr
     if(page_frames_free < count){ 
         return false;
     }
-    for(int i=0;i<count;i++){
+    for(uint32_t i = free_list_head/0x1000; i < count; i++){
         page_frames.push_back(free_list_head);
-        free_list_head++;
+        uint32_t index = i * 0x1000;
+        uint32_t v32;
+        memcpy(&v32, &memory[index], sizeof(uint32_t));
+        free_list_head = v32;
+        page_frames_free--;
     }
-    if(free_list_head == page_frames_total){
+
+    if(free_list_head/0x1000 == page_frames_total){
         free_list_head=0xFFFFFFFF;
     }
-    page_frames_free -= count;
+
     return true;
 }
 
@@ -55,15 +57,18 @@ bool PageFrameAllocator::Deallocate(uint32_t count, std::vector<uint32_t> &page_
     if(count > page_frames.size()){
         return false;
     }
-    if(free_list_head= 0xFFFFFFFF){
+    if(free_list_head == 0xFFFFFFFF){
         free_list_head = page_frames_total;
     }
-    for(int i = 0; i < count; ++i){
+    for(uint32_t i = 0; i < count; i++){
         page_frames.pop_back();
-        free_list_head--;
+        uint32_t index = (page_frames_total - i) * 0x1000;
+        uint32_t v32;
+        memcpy(&v32, &memory[index], sizeof(uint32_t));
+        free_list_head = v32;
     }
-    page_frames_free +=count;
+    page_frames_free += count;
 }
 
-
 PageFrameAllocator::~PageFrameAllocator() {}
+
