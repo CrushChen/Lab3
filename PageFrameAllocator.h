@@ -4,13 +4,12 @@
  *
  * Created on January 27, 2018, 12:39 AM
  */
-
 #ifndef PAGEFRAMEALLOCATOR_H
 #define PAGEFRAMEALLOCATOR_H
 
-#include <cstdlib>
-#include <stdint.h>
-#include <vector>
+//#include <cstdlib>
+#include <stdint.h> //uint8_t, uint32_t
+#include <vector> //vector
 
 /* PageFrameAllocator - manages allocation/deallocation of page frames. */
 class PageFrameAllocator {
@@ -45,14 +44,13 @@ public:
     /* Returns page frame # of first page frame in our free list 
      * (returns 0xFFFFFFF if empty) */
     uint32_t get_free_list_head() const { return free_list_head; };
-            
+
     /* Disallowed move/copy constructors */
     PageFrameAllocator(const PageFrameAllocator &orig) = delete;
     PageFrameAllocator(PageFrameAllocator &&orig) = delete;
     PageFrameAllocator operator=(const PageFrameAllocator &orig) = delete;
     PageFrameAllocator operator=(PageFrameAllocator &&orig) = delete;
 
-    
     /* Unused destructor */
     virtual ~PageFrameAllocator();
 private:
