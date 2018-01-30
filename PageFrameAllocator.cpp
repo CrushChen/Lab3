@@ -50,13 +50,18 @@ bool PageFrameAllocator::Allocate(uint32_t count, std::vector<uint32_t> &page_fr
  * allocated, and method should return false. 
  * If page frames are successfully allocated, return true.*/
     if(page_frames_free < count)
+    { 
         return false;
+    }
   
     
     //TODO: push allocated page frames onto back of page_frames
-    
+    else
+    {
+    page_frames.push_back(free_list_head);
     page_frames_free -= count;
     return true;
+    }
 }
 bool PageFrameAllocator::Deallocate(uint32_t count, std::vector<uint32_t> &page_frames){
 /* Return the last count page frame numbers from the vector page_frames to the 
@@ -64,6 +69,17 @@ bool PageFrameAllocator::Deallocate(uint32_t count, std::vector<uint32_t> &page_
  * vector as they are returned to the free list. Returns true if
  * count <= page_frames.size() otherwise returns false without freeing any page frames
  */
+    if(count<=page_frames.size())
+    {
+        page_frames_free +=count;
+       free_list_head=page_frames.back();
+        page_frames.pop_back();
+    }
+    else
+    {
+        return false;
+    }
+    
 
 }
 
