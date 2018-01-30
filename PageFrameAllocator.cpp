@@ -32,8 +32,8 @@ PageFrameAllocator::PageFrameAllocator(uint32_t numPageFrames){
  * Then build free list consistent of all page frames in memory.
  * Initialize other class member data variables as needed. */
     memory.resize(numPageFrames * PAGE_FRAME_SIZE, 0);
-    for(uint32_t i = 0; i < numPageFrames; ++i){
-        memcpy(&memory[(i*PAGE_FRAME_SIZE)], &i, sizeof(uint32_t));
+    for(uint32_t i = 1; i <= numPageFrames; ++i){
+        memcpy(&memory[((i-1)*PAGE_FRAME_SIZE)], &i, sizeof(uint32_t));
     }
     //Initialize class member variables
     allocated_pages.resize(numPageFrames, 0);
